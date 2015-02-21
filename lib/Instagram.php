@@ -71,18 +71,18 @@ class Instagram {
 		$cache_path = __DIR__ . '/../cache/' . $type . '.json';
 
 		$period = c::get('kg.cache_period') ? c::get('kg.cache_period') : '30 Minutes';
-		$cache = ['to' => strtotime($period), 'payload' => $result];
+		$cache = array('to' => strtotime($period), 'payload' => $result);
 		\f::write($cache_path, json_encode($cache));
 	}
 
 	public function feed(){
 		$feed = $this->check_cache('feed');
 		if(!$feed){
-			$feed = \Instagram\Remote::get('https://api.instagram.com/v1/users/self/feed', [
-				'data' => [
+			$feed = \Instagram\Remote::get('https://api.instagram.com/v1/users/self/feed', array(
+				'data' => array(
 					'access_token' => $this->get_config('token')
-				]
-			]);
+				)
+			));
 			$this->set_cache('feed', $feed->content);
 			$feed = $feed->content;
 		}
@@ -92,11 +92,11 @@ class Instagram {
 	public function liked(){
 		$liked = $this->check_cache('liked');
 		if(!$liked){
-			$liked = \Instagram\Remote::get('https://api.instagram.com/v1/users/self/media/liked', [
-				'data' => [
+			$liked = \Instagram\Remote::get('https://api.instagram.com/v1/users/self/media/liked', array(
+				'data' => array(
 					'access_token' => $this->get_config('token')
-				]
-			]);
+				)
+			));
 			$this->set_cache('liked', $liked->content);
 			$liked = $liked->content;
 		}
